@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tfoot {
+            font-weight: bold;
+        }
+        .add-button {
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Facture</h1>
+    <button class="add-button">Ajouter un item</button>
+    <table id="invoiceTable">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire (€)</th>
+                <th>Total (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total Facture</td>
+                <td id="invoiceTotal">62.50</td>
+            </tr>
+        </tfoot>
+    </table>
+    <script src="invoice.js"></script>
+</body>
+</html>
