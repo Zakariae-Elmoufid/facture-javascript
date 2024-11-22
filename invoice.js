@@ -1,8 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
-    let  count = 0;
-    const invoiceTable = document.getElementById('invoiceTable').getElementsByTagName('tbody')[0];
-    const invoiceTotal = document.getElementById('invoiceTotal');
-    const addBtn = document.querySelector('.add-button');
+const invoiceTable = document.getElementsByTagName('tbody')[0];
+const invoiceTotal = document.getElementById('invoiceTotal');
+const addBtn = document.querySelector('.add-button');
+let  count = 0;
     
     addBtn.addEventListener('click', function(){
         count += 1;
@@ -10,47 +9,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Ajouter un nouveau item 
+    let trow;
+    
     function addNewItem() {
-    let trow = document.createElement("tr");
-    trow.innerHTML = `
-           
+
+        trow = document.createElement("tr");
+
+        trow.innerHTML = `
                 <td>Article ${count}</td>
-                <td><input type="number" value="1" class="quantity" min="0" oninput=""></td>
-                <td><input type="number" value="10" class="unitPrice" min="0" step="0.01"></td>
-                <td class="itemTotal">10.00</td>
-                <td ><button onclick="removeRow(${count})" >remove</button></td>
+                <td><input type="number" value="1" id="quantity${count}" min="0" oninput="updateItemTotal(${count})"></td>
+                <td><input type="number" value="10" id="unitPrice${count}" min="0" oninput="updateItemTotal(${count})"></td>
+                <td class="itemTotal" id="itemTotal${count}">10.00</td>
+                <td ><button onclick="removeRow(${count}) " >remove</button></td>
       `        ;
       invoiceTable.appendChild(trow);
-    
+      updateInvoiceTotal();
  
-    
-        const quantityInput = trow.querySelector('.quantity');
-        const unitPriceInput = trow.querySelector('.unitPrice');
-
-
-        quantityInput.addEventListener('input', () => updateItemTotal(trow));
-        unitPriceInput.addEventListener('input', () => updateItemTotal(trow));
     }    
-        // these are selection helpers
         
 
 
     // This function updates the total amount in each row ( item price * Qte )
-    function updateItemTotal(row) {
-        const quantity= row.querySelector('.quantity').value;
-        const unitPrice= row.querySelector('.unitPrice').value;
-        const itemTotal = row.querySelector('.itemTotal');
+    function updateItemTotal(coun) {
+        const quantity= document.getElementById(`quantity${coun}`).value || 0;
+        const unitPrice= document.getElementById(`unitPrice${coun}`).value || 0;
+        const itemTotal = document.getElementById(`itemTotal${coun}`);
+
+        
 
         itemTotal.textContent = quantity * unitPrice ;
  
-        updateInvoiceTotal();
+        updateInvoiceTotal()
 
     }
-    
 
     // This function updates the total amount of the invoice (sum all Item totals)
     function updateInvoiceTotal() {
         const rows = invoiceTable.querySelectorAll('tr');
+        console.log(rows);
         let total = 0 ;
        rows.forEach(function(item ){
             const itemTotal = parseFloat(item.querySelector('.itemTotal').textContent);
@@ -60,10 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
- 
-
-
     // If you finish the above functions, consider adding a delete button
-   
 
- });
+    function removeRow(count) {
+        const row = document.getElementById(`quantity${count}`).closest('tr');
+        if (row) {
+            row.remove();  // Suppression de la ligne
+            updateInvoiceTotal();  // Mise à jour du total après suppression
+        }
+    }
